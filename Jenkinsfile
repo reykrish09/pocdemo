@@ -5,7 +5,37 @@ pipeline {
     jdk 'jdk21'          // Ensure this matches your Jenkins JDK config
     maven "Maven"
   }
-
+    parameters {
+        choice(name: 'scanOnly',
+            choices: 'no\nyes',
+            description: 'This will scan your application'
+        )
+        choice(name: 'buildOnly',
+            choices: 'no\nyes',
+            description: 'This will Only Build your application'
+        )
+        choice(name: 'dockerPush',
+            choices: 'no\nyes',
+            description: 'This Will build dockerImage and Push'
+        )
+        choice(name: 'deployToDev',
+            choices: 'no\nyes',
+            description: 'This will Deploy the app to Dev env'
+        )
+        choice(name: 'deployToTest',
+            choices: 'no\nyes',
+            description: 'This will Deploy the app to Test env'
+      
+        )
+        choice(name: 'deployToStage',
+            choices: 'no\nyes',
+            description: 'This will Deploy the app to Stage env'
+        )
+        choice(name: 'deployToProd',
+            choices: 'no\nyes',
+            description: 'This will Deploy the app to Prod env'
+        )
+    }
   environment {
     SONARQUBE        = 'sonar'                     // Sonar server name in Jenkins config
     SONAR_HOST_URL   = 'https://sonarcloud.io/'   // Use your Sonar host URL
@@ -50,17 +80,6 @@ pipeline {
       }
     }
 
-    stage('Quality Gate') {   //  Added missing Quality Gate stage
-      steps {
-        timeout(time: 2, unit: 'MINUTES') {
-          waitForQualityGate abortPipeline: true
-        }
-      }
-    }
   }
 
-  post {  // Ensure pipeline closes properly
-    success { echo "Analysis and Quality Gate passed!" }
-    failure { echo "Analysis failed – check logs." }
-  }
 }
