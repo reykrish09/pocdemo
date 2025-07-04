@@ -26,7 +26,7 @@ pipeline {
           withSonarQubeEnv(SONARQUBE) {
             sh """
               ${scannerHome}/bin/sonar-scanner \
-                -Dsonar.projectKey=reykrish09 \
+                -Dsonar.projectKey=reykrish09_pcodemo1 \
                 -Dsonar.organization=reykrish09 \
                 -Dsonar.sources=src \
                 -Dsonar.java.binaries=target/classes \
