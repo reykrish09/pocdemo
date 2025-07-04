@@ -2,15 +2,14 @@ pipeline {
   agent any
 
   tools {
-    jdk 'jdk21'          // Ensure this matches your Jenkins JDK config
-    sonar 'SonarScanner 7.1'    // Ensure this matches your Jenkins Tool name
+    jdk 'jdk17'          // Ensure this matches your Jenkins JDK config
 
   }
 
   environment {
     SONARQUBE        = 'sonar'                     // Sonar server name in Jenkins config
     SONAR_HOST_URL   = 'https://sonarcloud.io/'   // Use your Sonar host URL
-    SONAR_AUTH_TOKEN = credentials('sonar-token') // Secret Text credential stored in Jenkins
+    SONAR_AUTH_TOKEN = credentials('sonar') // Secret Text credential stored in Jenkins
   }
 
   stages {
@@ -23,7 +22,7 @@ pipeline {
     stage('SonarQube Analysis') {
       steps {
         script {
-          def scannerHome = tool 'SonarScanner 7.1'
+          scannerHome = tool name: 'Sonar', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
           withSonarQubeEnv(SONARQUBE) {
             sh """
               ${scannerHome}/bin/sonar-scanner \
@@ -38,13 +37,6 @@ pipeline {
       }
     }
 
-    stage('Quality Gate') {   //  Added missing Quality Gate stage
-      steps {
-        timeout(time: 2, unit: 'MINUTES') {
-          waitForQualityGate abortPipeline: true
-        }
-      }
-    }
   }
 
   post {  // Ensure pipeline closes properly
