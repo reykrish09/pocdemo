@@ -2,7 +2,6 @@ pipeline {
   agent any
 
   tools {
-    sonarInstaller 'sonar'    // Ensure this matches your Jenkins Tool name
     jdk 'jdk21'          // Ensure this matches your Jenkins JDK config
   }
 
@@ -25,7 +24,7 @@ pipeline {
           def scannerHome = tool 'sonar'
           withSonarQubeEnv(SONARQUBE) {
             sh """
-              scannerHome/bin/sonar-scanner \
+              ${scannerHome}/bin/sonar-scanner \
                 -Dsonar.projectKey=reykrish09 \
                 -Dsonar.sources=src \
                 -Dsonar.java.binaries=target/classes \
