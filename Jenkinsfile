@@ -3,10 +3,7 @@ pipeline {
 
   tools {
     jdk 'jdk21'          // Ensure this matches your Jenkins JDK config
-<<<<<<< HEAD
     maven "Maven"
-=======
->>>>>>> 9eb6b2464c9e599e3c27c056759728d6695919a7
   }
 
   environment {
