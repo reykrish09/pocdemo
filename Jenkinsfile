@@ -10,6 +10,7 @@ pipeline {
   environment {
     SONARQUBE  = 'sonar'  // Name from your SonarQube config in Jenkins
     SONAR_HOST_URL = 'https://sonarcloud.io/'
+    SONAR_AUTH_TOKEN = credentials('sonar-token') // Your secret text token
   }
 
   stages {
