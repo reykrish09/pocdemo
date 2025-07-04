@@ -13,11 +13,14 @@ pipeline {
   }
 
   stages {
-    stage('Checkout') {
-      steps {
-        checkout scm
-      }
-    }
+        stage("clone code") {
+            steps {
+                script {
+                    // Let's clone the source
+                    git 'https://github.com/reykrish09/pocdemo.git';
+                }
+            }
+        }
 
       stage("mvn build") {
             steps {
