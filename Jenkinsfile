@@ -2,21 +2,20 @@ pipeline {
   agent any
 
   tools {
-    // Make sure you've configured this in Jenkins → Global Tool Configuration
-    sonar 'SonarScanner 7.1'
-    jdk21 'OpenJDK 21'
+    sonar 'SonarScanner 7.1'    // Ensure this matches your Jenkins Tool name
+    jdk21 'OpenJDK 21'          // Ensure this matches your Jenkins JDK config
   }
 
   environment {
-    SONARQUBE  = 'sonar'  // Name from your SonarQube config in Jenkins
-    SONAR_HOST_URL = 'https://sonarcloud.io/'
-    SONAR_AUTH_TOKEN = credentials('sonar-token') // Your secret text token
+    SONARQUBE        = 'sonar'                     // Sonar server name in Jenkins config
+    SONAR_HOST_URL   = 'https://sonarcloud.io/'   // Use your Sonar host URL
+    SONAR_AUTH_TOKEN = credentials('sonar-token') // Secret Text credential stored in Jenkins
   }
 
   stages {
     stage('Checkout') {
       steps {
-        git 'https://github.com/reykrish09/pocdemo.git'  // Replace with your repo
+        checkout scm
       }
     }
 
@@ -31,10 +30,24 @@ pipeline {
                 -Dsonar.sources=src \
                 -Dsonar.java.binaries=target/classes \
                 -Dsonar.host.url=${env.SONAR_HOST_URL} \
-                -Dsonar.login=${env.SONAR_AUTH_TOKEN}
+                -Dsonar.token=${env.SONAR_AUTH_TOKEN}
             """
           }
         }
       }
     }
 
+    stage('Quality Gate') {   //  Added missing Quality Gate stage
+      steps {
+        timeout(time: 2, unit: 'MINUTES') {
+          waitForQualityGate abortPipeline: true
+        }
+      }
+    }
+  }
+
+  post {  // Ensure pipeline closes properly
+    success { echo "Analysis and Quality Gate passed!" }
+    failure { echo "Analysis failed – check logs." }
+  }
+}
