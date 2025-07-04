@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   tools {
-    sonarScanner 'sonar'    // Ensure this matches your Jenkins Tool name
+    sonarInstaller 'sonar'    // Ensure this matches your Jenkins Tool name
     jdk 'jdk21'          // Ensure this matches your Jenkins JDK config
   }
 
