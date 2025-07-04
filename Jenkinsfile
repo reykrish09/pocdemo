@@ -23,7 +23,7 @@ pipeline {
       steps {
         script {
           scannerHome = tool name: 'sonar', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-          withSonarQubeEnv(SONARQUBE) {
+          
             sh """
               ${scannerHome}/bin/sonar-scanner \
                 -Dsonar.projectKey=reykrish09_pcodemo1 \
@@ -33,7 +33,7 @@ pipeline {
                 -Dsonar.host.url=${env.SONAR_HOST_URL} \
                 -Dsonar.token=${env.SONAR_AUTH_TOKEN}
             """
-          }
+          
         }
       }
     }
