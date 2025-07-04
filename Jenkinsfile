@@ -2,8 +2,8 @@ pipeline {
   agent any
 
   tools {
-    sonar 'SonarScanner 7.1'    // Ensure this matches your Jenkins Tool name
-    jdk21 'OpenJDK 21'          // Ensure this matches your Jenkins JDK config
+    jdk 'jdk21'          // Ensure this matches your Jenkins JDK config
+    maven "Maven"
   }
 
   environment {
@@ -19,10 +19,20 @@ pipeline {
       }
     }
 
+      stage("mvn build") {
+            steps {
+                script {
+                    // If you are using Windows then you should use "bat" step
+                    // Since unit testing is out of the scope we skip them
+                    bat(/${MAVEN_HOME}\bin\mvn -Dmaven.test.failure.ignore clean package/)
+                }
+            }
+        }
+
     stage('SonarQube Analysis') {
       steps {
         script {
-          def scannerHome = tool 'SonarScanner 7.1'
+          scannerHome = tool 'sonar'
           withSonarQubeEnv(SONARQUBE) {
             sh """
               ${scannerHome}/bin/sonar-scanner \
