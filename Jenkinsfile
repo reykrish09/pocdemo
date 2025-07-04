@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   tools {
-    sonar 'Sonar'    // Ensure this matches your Jenkins Tool name
+    sonarScanner 'sonar'    // Ensure this matches your Jenkins Tool name
     jdk 'jdk21'          // Ensure this matches your Jenkins JDK config
   }
 
@@ -22,10 +22,10 @@ pipeline {
     stage('SonarQube Analysis') {
       steps {
         script {
-          def scannerHome = tool 'SonarScanner 7.1'
+          def scannerHome = tool 'sonar'
           withSonarQubeEnv(SONARQUBE) {
             sh """
-              ${scannerHome}/bin/sonar-scanner \
+              scannerHome/bin/sonar-scanner \
                 -Dsonar.projectKey=reykrish09 \
                 -Dsonar.sources=src \
                 -Dsonar.java.binaries=target/classes \
