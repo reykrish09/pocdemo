@@ -27,6 +27,7 @@ pipeline {
             sh """
               ${scannerHome}/bin/sonar-scanner \
                 -Dsonar.projectKey=reykrish09 \
+                -Dsonar.organization=reykrish09 \
                 -Dsonar.sources=src \
                 -Dsonar.java.binaries=target/classes \
                 -Dsonar.host.url=${env.SONAR_HOST_URL} \
