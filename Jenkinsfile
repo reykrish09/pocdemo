@@ -29,7 +29,6 @@ pipeline {
                 -Dsonar.projectKey=reykrish09_pcodemo1 \
                 -Dsonar.organization=reykrish09 \
                 -Dsonar.sources=src \
-                -Dsonar.java.binaries=target/classes \
                 -Dsonar.host.url=${env.SONAR_HOST_URL} \
                 -Dsonar.token=${env.SONAR_AUTH_TOKEN}
             """
