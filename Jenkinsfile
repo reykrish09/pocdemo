@@ -30,7 +30,9 @@ pipeline {
                 -Dsonar.organization=reykrish09 \
                 -Dsonar.sources=src \
                 -Dsonar.host.url=${env.SONAR_HOST_URL} \
-                -Dsonar.token=${env.SONAR_AUTH_TOKEN}
+                -Dsonar.token=${env.SONAR_AUTH_TOKEN} \
+                -Dsonar.java.binaries=.
+
             """
           
         }
